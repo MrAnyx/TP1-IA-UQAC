@@ -1,16 +1,30 @@
+from objects.Board import Board
+from objects.Window import Window
+from objects.Robot import Robot
+import time
 
-from Board import Board
-from Window import Window
+# Todo: Commenter le code
 
-board = Board()
-w = Window(500, 500, False, "TP1 IA", board)
-w.create_window()
+b = Board()
+r = Robot(b)
+w = Window(500, 500, False, "TP1 IA", b, r)
+w.display_board()
+
+_counter = 1
+
+while(r.energy > 0):
+   # if(_counter % 2 == 0): b.random_dust_jewel()
+   b.random_dust_jewel()
+
+   goal = r.select_nearest_not_empty_room()
+   r.reach_selected_room(goal)
+   
+   if(r.is_on_goal(goal)):
+      r.clean_or_take(goal)
+
+   _counter += 1
+   w.display_board()
+   r.display_current_energy()
+   time.sleep(1)
 
 w.mainloop()
-
-# C = Canvas(w, bg="blue", height=250, width=300)
-
-# coord = 10, 50, 240, 210
-# arc = C.create_arc(coord, start=0, extent=150, fill="red")
-
-# C.pack()

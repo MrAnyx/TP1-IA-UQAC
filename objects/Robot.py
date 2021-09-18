@@ -18,6 +18,9 @@ class Robot:
         self.board = board
         self.room_cleaned = 0
 
+        self.INFORMED = 1
+        self.NOT_INFORMED = 2
+
     def move_up(self):
         self.y = self.y - 1
 

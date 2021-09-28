@@ -1,6 +1,7 @@
 from objects.Board import Board
 from objects.Window import Window
 from objects.Robot import Robot
+from utils.Decorator import deprecated
 from threading import *
 import time
 
@@ -8,9 +9,8 @@ import time
 # Todo: Ajouter l'exploration non informé (sans boucle) et informée
 # Todo: Faire en sorte de récupérer les bijou / poussière si la case est directement sur notre chemin
 
-
 b = Board()
-r = Robot(b)
+r = Robot(b, Robot.NOT_INFORMED)
 w = Window(500, 500, False, "TP1 IA", b, r)
 
 # _counter = 1

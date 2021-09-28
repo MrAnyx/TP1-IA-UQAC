@@ -1,8 +1,7 @@
 import random
 import math
+from utils.Decorator import deprecated
 
-# Todo: Inclure un état dans le robot pour déterminer si, dans le cas ou on a deux pièces à la même distance, choisir qu'il préfère la poussière ou le bijou plutot que les deux
-# Todo: Ajouter le fait que le robot peut aller plus loin mais faire de la poussière ou un bijou.
 class Robot:
     """
     La classe Robot représent l'agent intelligent qui peut intéragir et parcourir son environnement.
@@ -10,16 +9,18 @@ class Robot:
     Il possède également un compteur car, chacune des actions qu'il fait lui coût un point d'énergie
     Enfin, pour se déplacer et prendre des décisions, il doit connaitre son environnement
     """
+    
+    INFORMED = 1
+    NOT_INFORMED = 2
 
-    def __init__(self, board, energy=50):
+    def __init__(self, board, search_type, energy=50):
         self.x = random.randint(0, 4)
         self.y = random.randint(0, 4)
         self.energy = energy
         self.board = board
         self.room_cleaned = 0
+        self.search_type = search_type
 
-        self.INFORMED = 1
-        self.NOT_INFORMED = 2
 
     def move_up(self):
         self.y = self.y - 1
@@ -33,6 +34,7 @@ class Robot:
     def move_left(self):
         self.x = self.x - 1
 
+    @deprecated
     def __get_not_empty_room(self):
         not_empty_room = []
         for i in range(5):
@@ -42,6 +44,7 @@ class Robot:
 
         return not_empty_room
 
+    @deprecated
     def select_nearest_not_empty_room(self):
         not_empty_room = self.__get_not_empty_room()
         if(len(not_empty_room) == 0): return -1
@@ -54,6 +57,7 @@ class Robot:
 
         return not_empty_room[index]
 
+    @deprecated
     def reach_selected_room(self, room_coord):
         if(room_coord == [self.x, self.y] or room_coord == -1): return
         else:
@@ -88,3 +92,14 @@ class Robot:
             print(f"I'm running out of energy, i will die soon : {self.energy}")
         else:
             print(f"Oops, i died ☠. I cleaned {self.room_cleaned} rooms")
+
+    def get_neighbour_rooms(current):
+        pass
+
+    # Exploration non informée
+    def greedy_search():
+        pass
+
+    # Exploration informée avec une heuristique (norme entre deux cases)
+    def a_star_search():
+        pass

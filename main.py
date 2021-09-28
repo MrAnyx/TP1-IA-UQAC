@@ -13,7 +13,7 @@ b = Board()
 r = Robot(b, Robot.NOT_INFORMED)
 w = Window(500, 500, False, "TP1 IA", b, r)
 
-print(r.get_neighbor_rooms([5, 5], [[5, 4]]))
+print(r.get_neighbor_rooms([0, 1], [[5, 4]]))
 
 # _counter = 1
 
@@ -23,7 +23,7 @@ print(r.get_neighbor_rooms([5, 5], [[5, 4]]))
 
 #    goal = r.select_nearest_not_empty_room()
 #    r.reach_selected_room(goal)
-   
+
 #    if(r.is_on_goal(goal)):
 #       r.clean_or_take(goal)
 

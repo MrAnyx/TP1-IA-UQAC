@@ -93,13 +93,39 @@ class Robot:
         else:
             print(f"Oops, i died ☠. I cleaned {self.room_cleaned} rooms")
 
-    def get_neighbour_rooms(current):
-        pass
+
+    # Todo Factoriser la fonction pour ne pas avoir 4 if à la suite
+    def get_neighbor_rooms(self, current, visited = []):
+        neighbor = []
+        if current[0] >= 0:
+            neighbor.append([current[0] - 1, current[1]]) # [x-1, y]
+
+        if current[0] <= 7:
+            neighbor.append([current[0] + 1, current[1]]) # [x+1, y]
+
+        if current[1] >= 0:
+            neighbor.append([current[0], current[1] - 1]) # [x, y-1]
+
+        if current[1] <= 7:
+            neighbor.append([current[0], current[1] + 1]) # [x, y+1]
+
+        # On retourne touts les voisins qui ne sont pas dans la liste des pièces visités
+        return list(filter(lambda el: el not in visited, neighbor))
+
+
+    def search(self):
+        if self.search_type == self.NOT_INFORMED:
+            self.depth_limited_search()
+        else:
+            self.a_star_search()
 
     # Exploration non informée
-    def greedy_search():
+    # Peut-être envisager le depth-limited deepening
+    # Todo Ajouter une liste des noeuds visités
+    def depth_limited_search(self):
         pass
 
     # Exploration informée avec une heuristique (norme entre deux cases)
-    def a_star_search():
+    # Todo Ajouter une liste des noeuds visités
+    def a_star_search(self):
         pass

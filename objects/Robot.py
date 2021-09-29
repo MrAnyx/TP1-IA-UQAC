@@ -1,3 +1,4 @@
+import json
 import random
 import math
 from utils.Decorator import deprecated
@@ -110,8 +111,14 @@ class Robot:
         else:
             print(f"Oops, i died ☠. I cleaned {self.room_cleaned} rooms")
 
-    def search(self):
+    def search(self, goal):
+
+        self.processor.create_graph()
+        current_position_id = self.processor.get_room_id_from_coords([self.x, self.y])
+
         if self.search_type == self.NOT_INFORMED:
-            self.processor.depth_first_search()
+            return self.processor.depth_first_search_optimized(
+                current_position_id, goal
+            )
         else:
-            self.processor.greedy_search()
+            return self.processor.greedy_search()

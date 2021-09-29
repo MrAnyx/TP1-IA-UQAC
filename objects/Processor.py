@@ -1,6 +1,10 @@
+from objects.Graph import Graph
+
+
 class Processor:
     def __init__(self, robot):
         self.robot = robot
+        self.graph = None
 
     def get_room_coords_from_id(self, id):
         return [math.floor(id / 5), id % 5]
@@ -43,11 +47,38 @@ class Processor:
 
                 graph[id] = neighbors_ids
 
-        return graph
+        self.graph = Graph(graph)
+
+    # Les performances de cet algorithme dépendent de la manière dont le graph est construit
+    # Les noeuds seront pris dans l'ordre donc il ce peut que les solutions soient différentes selon le graph
+    # Cet algorithme retourne la première solution qu'il trouve (ce n'est pas forcement la plus optimisée)
+    def depth_first_search(self, start, end, path=[]):
+        path.append(start)
+        if start == end:
+            return path
+        for node in self.graph.get_node_neighbors(start):
+            if node not in path:
+                _tmp_path = self.depth_first_search(node, end, path)
+                if _tmp_path:
+                    return _tmp_path
+
+        return None
 
     # Exploration non informée
-    def depth_first_search(self):
-        pass
+    # Ici, l'algo retourne la solution la plus courte entre deux noeuds
+    def depth_first_search_optimized(self, start, end, path=[]):
+        path = path + [start]
+        if start == end:
+            return path
+        shortest_path = None
+        for node in self.graph.get_node_neighbors(start):
+            if node not in path:
+                _tmp_path = self.depth_first_search_optimized(node, end, path)
+                if _tmp_path:
+                    if not shortest_path or len(_tmp_path) < len(shortest_path):
+                        shortest_path = _tmp_path
+
+        return shortest_path
 
     # Exploration informée avec une heuristique (norme entre deux cases)
     def greedy_search(self):

@@ -114,7 +114,7 @@ class Robot:
 
     # Exploration non informée
     # Peut-être envisager le depth-limited deepening ou le depth first search
-    # Todo Ajouter une liste des noeuds visités
+    # TODO Ajouter une liste des noeuds visités
     def depth_first_search(self, visited, graph, node):
         """
         0.  On effectue une exploration pour  déterminer les rooms qui contiennent de la poussière ou un bijou
@@ -137,7 +137,7 @@ class Robot:
         pass
 
     # Exploration informée avec une heuristique (norme entre deux cases)
-    # Todo Ajouter une liste des noeuds visités
+    # TODO Ajouter une liste des noeuds visités
     def greedy_search(self):
         """
         0.  On part de la current node puis on expand la node de l'arbre

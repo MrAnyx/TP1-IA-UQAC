@@ -41,13 +41,16 @@ class Board:
     def get_board(self):
         return self.board
 
+    ## Todo: à partir de la, mettre toutes les methodes dans une classe à part
     def get_room_coords_from_id(self, id):
         return [math.floor(id / 5), id % 5]
 
+    # Todo: mettre cette fonction dans une classe à part
     def get_room_id_from_coords(self, coords):
         return coords[0] + (coords[1] * 5)
 
     # Todo Factoriser la fonction pour ne pas avoir 4 if à la suite
+    # Todo: mettre cette fonction dans une classe à part
     def get_neighbor_rooms(self, current):
         neighbor = []
         if current[0] > 0:
@@ -64,6 +67,7 @@ class Board:
 
         return neighbor
 
+    ## Todo: Mettre cette fonction dans une classe à part
     def create_graph(self):
         """
         Renvoie un dictionnaire de type :
@@ -76,14 +80,10 @@ class Board:
         for i in range(5):
             for j in range(5):
                 neighbors = self.get_neighbor_rooms([i, j])
-                coords = [i, j]
                 id = i + 5 * j
                 neighbors_ids = list(
                     map(lambda el: self.get_room_id_from_coords(el), neighbors)
                 )
-
-                # if i == j == 0:
-                #     node = Node(None, coords, id)
 
                 graph[id] = neighbors_ids
 

@@ -1,6 +1,7 @@
 import random
 import math
 from utils.Decorator import deprecated
+from objects.Processor import Processor
 
 
 class Robot:
@@ -21,9 +22,10 @@ class Robot:
         self.board = board
         self.room_cleaned = 0
         self.search_type = search_type
-        self.is_free = (
-            True  # Permet de savoir si le robot est en train de rejoindre une pièce
-        )
+
+        # Permet de savoir si le robot est en train de rejoindre une  ou en train d'effectuer une exploration
+        self.is_free = True
+        self.processor = Processor(self)
 
     def move_up(self):
         self.y = self.y - 1
@@ -108,39 +110,6 @@ class Robot:
 
     def search(self):
         if self.search_type == self.NOT_INFORMED:
-            self.depth_first_search()
+            self.processor.depth_first_search()
         else:
-            self.greedy_search()
-
-    # Exploration non informée
-    # Peut-être envisager le depth-limited deepening ou le depth first search
-    # TODO Ajouter une liste des noeuds visités
-    def depth_first_search(self, visited, graph, node):
-        """
-        0.  On effectue une exploration pour  déterminer les rooms qui contiennent de la poussière ou un bijou
-        1.  On part de la case courante puis on expand l'arbre
-            (on appelle la fonction get_neighbor_rooms) et on update la liste des rooms visitées
-
-        2.  On check la première node puis on expand (même principe qu'au dessus)
-
-        3.  A chaque étape, on enregistre le nombre de poussière / bijou pour, à la fin, séléctionner le chemin qui en contient le plus
-
-        4.  Si on ne peux pas expand la current node :
-            4.1.    On enregister le nombre de poussière / bijou pour le chemin
-            4.2.    On retourne à la node parent et on soustrait le nombre de node enfants visitables pour le parent
-            4.3.    On check les autres nodes
-
-        5.  On associe à chaque chemin le nombre de poussière / bijou
-
-        6.  A la fin, si il n'y a plus de node dispo, on stop et on check le
-        """
-        pass
-
-    # Exploration informée avec une heuristique (norme entre deux cases)
-    # TODO Ajouter une liste des noeuds visités
-    def greedy_search(self):
-        """
-        0.  On part de la current node puis on expand la node de l'arbre
-        1.
-        """
-        pass
+            self.processor.greedy_search()

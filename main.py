@@ -6,7 +6,6 @@ import time
 
 # TODO Commenter le code
 # TODO Ajouter l'exploration non informé (sans boucle) et informée
-# TODO Faire en sorte de récupérer les bijou / poussière si la case est directement sur notre chemin
 
 b = Board()
 r = Robot(b, Robot.NOT_INFORMED)

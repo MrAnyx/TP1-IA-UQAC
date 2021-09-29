@@ -6,9 +6,10 @@ import json
 b = Board()
 r = Robot(b, Robot.NOT_INFORMED)
 
-# print(json.dumps(b.create_graph(), indent=3))
 
-graph = b.create_graph()
+print(json.dumps(r.processor.create_graph(), indent=3))
+
+graph = r.processor.create_graph()
 
 # Les performances de cet algorithme dépendent de la manière dont le graph est construit
 # Les noeuds seront pris dans l'ordre donc il ce peut que les solutions soient différentes selon le graph
@@ -42,7 +43,7 @@ def depth_first_search_optimized(graph, start, end, path=[]):
     return shortest
 
 
-print(depth_first_search_optimized(graph, 11, 9))
+# print(depth_first_search_optimized(graph, 11, 9))
 
 
 ## TODO Créer une class graph et node

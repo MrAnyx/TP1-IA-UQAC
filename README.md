@@ -29,3 +29,9 @@ pip install -r requirements.txt
 ```
 
 Et voila !
+
+## Usefull links
+- https://www.annytab.com/a-star-search-algorithm-in-python/
+- https://www.redblobgames.com/pathfinding/a-star/implementation.html#python
+- https://favtutor.com/blogs/depth-first-search-python
+- https://www.python.org/doc/essays/graphs/

@@ -54,13 +54,21 @@ class Window:
                     i * 100, j * 100, (i + 1) * 100, (j + 1) * 100, fill=color
                 )
 
+                _text = self.canvas.create_text(
+                    i * 100 + 50,
+                    j * 100 + 50,
+                    text=i + 5 * j,
+                    fill="black",
+                    font=("Helivica 13 bold"),
+                )
+
         # On affiche le robot
         _rect = self.canvas.create_rectangle(
             self.robot.x * 100 + 25,
             self.robot.y * 100 + 25,
             (self.robot.x * 100) + 75,
             (self.robot.y * 100) + 75,
-            fill="#000",
+            fill="#888",
         )
 
         # On update le canvas pour que les nouvelles modifs soient prises en compte

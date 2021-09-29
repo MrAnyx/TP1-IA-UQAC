@@ -25,6 +25,8 @@ class Robot:
 
         # Permet de savoir si le robot est en train de rejoindre une  ou en train d'effectuer une exploration
         self.is_free = True
+
+        # Le processeur du roobt permet d'effectuer les actions de recherche / sélection de la bonne pièce
         self.processor = Processor(self)
 
     def move_up(self):

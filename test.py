@@ -2,14 +2,15 @@ from objects.Board import Board
 from objects.Window import Window
 from objects.Robot import Robot
 import json
+from objects.Graph import Graph
 
 b = Board()
 r = Robot(b, Robot.NOT_INFORMED)
 
 
-print(json.dumps(r.processor.create_graph(), indent=3))
+# print(json.dumps(r.processor.create_graph(), indent=3))
 
-graph = r.processor.create_graph()
+# graph = r.processor.create_graph()
 
 # Les performances de cet algorithme dépendent de la manière dont le graph est construit
 # Les noeuds seront pris dans l'ordre donc il ce peut que les solutions soient différentes selon le graph
@@ -44,6 +45,11 @@ def depth_first_search_optimized(graph, start, end, path=[]):
 
 
 # print(depth_first_search_optimized(graph, 11, 9))
+
+
+graph = {1: [2, 3], 2: [3], 3: [4, 5, 6]}
+graph = Graph(graph)
+print(json.dumps(graph.nodes, indent=3))
 
 
 ## TODO Créer une class graph et node

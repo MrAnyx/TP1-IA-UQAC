@@ -46,7 +46,6 @@ class Processor:
         return graph
 
     # Exploration non informée
-    # Peut-être envisager le depth-limited deepening ou le depth first search
     def depth_first_search(self):
         pass
 

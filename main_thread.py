@@ -4,7 +4,7 @@ from objects.Robot import Robot
 from threading import *
 import time
 
-# Todo: Commenter le code
+# TODO Commenter le code
 
 b = Board()
 r = Robot(b, Robot.NOT_INFORMED)

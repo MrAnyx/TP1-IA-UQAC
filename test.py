@@ -45,4 +45,5 @@ def depth_first_search_optimized(graph, start, end, path=[]):
 print(depth_first_search_optimized(graph, 11, 9))
 
 
-## Todo: Créer une class graph et node
+## TODO Créer une class graph et node
+## TODO Ajouter l'exploration

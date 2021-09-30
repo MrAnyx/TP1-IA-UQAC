@@ -36,6 +36,8 @@ class Window:
     def update(self):
         self.window.update()
 
+    # TODO Mettre cette fonction dans une classe à part pour l'appeler en static de partout
+    # TODO Mettre le board et le robot en paramètre
     def display_board(self):
         # self.canvas.delete("all")
         color = None

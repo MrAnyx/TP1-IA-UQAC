@@ -154,12 +154,12 @@ class Robot:
 
     def explore(self):
         print("I'm exploring the board to find the best path")
-        time.sleep(3)
+        # time.sleep(3)
 
         path = self.find_best_path()
 
         if path:
             self.will_explore = False
             self.is_reaching_room = True
-            self.path = path
+            self.path = path[1:]
             self.goal = self.processor.get_room_coords_from_id(path[-1])

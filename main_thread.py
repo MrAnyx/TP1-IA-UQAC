@@ -46,8 +46,8 @@ def update_robot():
         time.sleep(1)
 
 
-t1 = threading.Thread(target=update_env, args=[])
-t2 = threading.Thread(target=update_robot, args=[])
+t1 = threading.Thread(target=update_env)
+t2 = threading.Thread(target=update_robot)
 
 t1.start()
 t2.start()

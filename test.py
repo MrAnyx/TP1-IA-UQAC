@@ -5,12 +5,18 @@ import json
 from objects.Graph import Graph
 
 b = Board()
+b.board = [
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+]
 r = Robot(b, Robot.NOT_INFORMED)
 
-r.x = 0
-r.y = 0
-print(r.search(24))
+r.x = 3
+r.y = 3
+print(r.find_best_path())
 
-# print(json.dumps(graph.nodes, indent=3))
 
 ## TODO Ajouter l'exploration

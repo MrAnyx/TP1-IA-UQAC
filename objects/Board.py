@@ -16,6 +16,11 @@ class Board:
     La répartition des éléments dans les pièces est faite de manière pseudo-aléatoire.
     """
 
+    NOTHING = 0
+    JEWEL = 1
+    DUST = 2
+    BOTH = 3
+
     def __init__(self):
         self.board = [[0 for j in range(5)] for i in range(5)]
 

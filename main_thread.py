@@ -10,8 +10,6 @@ b = Board()
 r = Robot(b, Robot.NOT_INFORMED)
 w = Window(500, 500, False, "TP1 IA", b, r)
 
-# _counter = 1
-
 
 def update_env():
     global r, b

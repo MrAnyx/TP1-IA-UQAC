@@ -3,6 +3,7 @@ import random
 import math
 from utils.Decorator import deprecated
 from objects.Processor import Processor
+import time
 
 
 class Robot:
@@ -25,10 +26,14 @@ class Robot:
         self.search_type = search_type
 
         # Permet de savoir si le robot est en train de rejoindre une  ou en train d'effectuer une exploration
-        self.is_free = True
+        self.will_explore = True
+        self.is_reaching_room = False
+
+        self.path = []
+        self.goal = None
 
         # Le processeur du roobt permet d'effectuer les actions de recherche / sélection de la bonne pièce
-        self.processor = Processor(self)
+        self.processor = Processor(self.board)
 
     def move_up(self):
         self.y = self.y - 1
@@ -43,7 +48,7 @@ class Robot:
         self.x = self.x - 1
 
     @deprecated
-    def __get_not_empty_room(self):
+    def _get_not_empty_room(self):
         not_empty_room = []
         for i in range(5):
             for j in range(5):
@@ -54,7 +59,7 @@ class Robot:
 
     @deprecated
     def select_nearest_not_empty_room(self):
-        not_empty_room = self.__get_not_empty_room()
+        not_empty_room = self._get_not_empty_room()
         if len(not_empty_room) == 0:
             return -1
         else:
@@ -68,9 +73,8 @@ class Robot:
 
         return not_empty_room[index]
 
-    @deprecated
     def reach_selected_room(self, room_coord):
-        if room_coord == [self.x, self.y] or room_coord == -1:
+        if self.is_on_goal(room_coord) or not room_coord:
             return
         else:
             if room_coord[1] < self.y:
@@ -90,11 +94,7 @@ class Robot:
         return False
 
     def clean_or_take(self, goal):
-        if goal == -1:
-            return  # Il n'y a pas poussière à nettoyer ou de bijou à ramasser
-
         current_room_state = self.board.get_board()[goal[0]][goal[1]]
-
         if current_room_state in [1, 2]:
             self.energy -= 1
         elif current_room_state == 3:
@@ -102,8 +102,12 @@ class Robot:
 
         self.room_cleaned += 1
         self.board.get_board()[goal[0]][goal[1]] = 0
+        self.goal = None
 
-    def display_current_energy(self):
+    def display_current_state(self):
+        print(f"path : {self.path}")
+        print(f"goal : {self.goal}")
+        print(f"Current position coords : {[self.x, self.y]}")
         if self.energy > 10:
             print(f"Current energy of the robot : {self.energy}")
         elif self.energy > 0 and self.energy <= 10:
@@ -111,14 +115,45 @@ class Robot:
         else:
             print(f"Oops, i died ☠. I cleaned {self.room_cleaned} rooms")
 
-    def search(self, goal):
+        print("")
 
+    def _goal_is_coords(self, goal):
+        if type(goal) is int:
+            return False
+        else:
+            return True
+
+    def _convert_path_with_goal_type(self, path, goal):
+        return (
+            path
+            if not self._goal_is_coords(goal)
+            else list(
+                map(
+                    lambda room_id: self.processor.get_room_coords_from_id(room_id),
+                    path,
+                )
+            )
+        )
+
+    def find_best_path(self):
         self.processor.create_graph()
         current_position_id = self.processor.get_room_id_from_coords([self.x, self.y])
 
         if self.search_type == self.NOT_INFORMED:
-            return self.processor.depth_first_search_optimized(
-                current_position_id, goal
-            )
+            path = self.processor.depth_first_search_optimized(current_position_id)
         else:
-            return self.processor.greedy_search()
+            path = self.processor.greedy_search()
+
+        return path
+
+    def explore(self):
+        print("I'm exploring the board to find the best path")
+        time.sleep(3)
+
+        path = self.find_best_path()
+
+        if path:
+            self.will_explore = False
+            self.is_reaching_room = True
+            self.path = path
+            self.goal = self.processor.get_room_coords_from_id(path[-1])

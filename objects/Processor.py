@@ -1,13 +1,15 @@
 from objects.Graph import Graph
+from objects.Board import Board
+import math
 
 
 class Processor:
-    def __init__(self, robot):
-        self.robot = robot
+    def __init__(self, board):
         self.graph = None
+        self.board = board
 
     def get_room_coords_from_id(self, id):
-        return [math.floor(id / 5), id % 5]
+        return [id % 5, math.floor(id / 5)]
 
     def get_room_id_from_coords(self, coords):
         return coords[0] + (coords[1] * 5)
@@ -52,13 +54,20 @@ class Processor:
     # Les performances de cet algorithme dépendent de la manière dont le graph est construit
     # Les noeuds seront pris dans l'ordre donc il ce peut que les solutions soient différentes selon le graph
     # Cet algorithme retourne la première solution qu'il trouve (ce n'est pas forcement la plus optimisée)
-    def depth_first_search(self, start, end, path=[]):
-        path.append(start)
-        if start == end:
+    def depth_first_search(self, start_key, path=[]):
+        [start_x, start_y] = self.get_room_coords_from_id(start_key)
+
+        path = path + [start_key]
+        if self.board.get_board()[start_x][start_y] in [
+            Board.DUST,
+            Board.JEWEL,
+            Board.BOTH,
+        ]:
             return path
-        for node in self.graph.get_node_neighbors(start):
+
+        for node in self.graph.get_node_neighbors(start_key):
             if node not in path:
-                _tmp_path = self.depth_first_search(node, end, path)
+                _tmp_path = self.depth_first_search(node, path)
                 if _tmp_path:
                     return _tmp_path
 
@@ -66,14 +75,21 @@ class Processor:
 
     # Exploration non informée
     # Ici, l'algo retourne la solution la plus courte entre deux noeuds
-    def depth_first_search_optimized(self, start, end, path=[]):
-        path = path + [start]
-        if start == end:
+    def depth_first_search_optimized(self, start_key, path=[]):
+        [start_x, start_y] = self.get_room_coords_from_id(start_key)
+
+        path = path + [start_key]
+        if self.board.get_board()[start_x][start_y] in [
+            Board.DUST,
+            Board.JEWEL,
+            Board.BOTH,
+        ]:
             return path
+
         shortest_path = None
-        for node in self.graph.get_node_neighbors(start):
+        for node in self.graph.get_node_neighbors(start_key):
             if node not in path:
-                _tmp_path = self.depth_first_search_optimized(node, end, path)
+                _tmp_path = self.depth_first_search_optimized(node, path)
                 if _tmp_path:
                     if not shortest_path or len(_tmp_path) < len(shortest_path):
                         shortest_path = _tmp_path

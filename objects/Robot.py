@@ -8,7 +8,7 @@ import time
 
 class Robot:
     """
-    La classe Robot représent l'agent intelligent qui peut intéragir et parcourir son environnement.
+    La classe Robot représente l'agent intelligent qui peut intéragir et parcourir son environnement.
     Il possède des coordonnées x et y afin de pouvoir le localiser.
     Il possède également un compteur car, chacune des actions qu'il fait lui coût un point d'énergie
     Enfin, pour se déplacer et prendre des décisions, il doit connaitre son environnement

@@ -43,5 +43,7 @@ class Board:
         elif prob > 0.66 and self.board[_x][_y] not in [1, 3]:
             self.board[_x][_y] = self.board[_x][_y] + 1
 
+        return [_x, _y]
+
     def get_board(self):
         return self.board

@@ -7,7 +7,7 @@ import time
 # TODO Commenter le code
 
 b = Board()
-r = Robot(b, Robot.NOT_INFORMED)
+r = Robot(b, Robot.NOT_INFORMED, True)
 w = Window(500, 500, False, "TP1 IA", b, r)
 
 _counter = 1

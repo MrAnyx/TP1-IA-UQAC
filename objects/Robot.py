@@ -17,7 +17,7 @@ class Robot:
     INFORMED = 1
     NOT_INFORMED = 2
 
-    def __init__(self, board, search_type, energy=200):
+    def __init__(self, board, search_type, optimized=True, energy=200):
         self.x = random.randint(0, 4)
         self.y = random.randint(0, 4)
         self.energy = energy
@@ -31,6 +31,8 @@ class Robot:
 
         self.path = []
         self.goal = None
+
+        self.optimized = optimized
 
         # Le processeur du roobt permet d'effectuer les actions de recherche / sélection de la bonne pièce
         self.processor = Processor(self.board)
@@ -140,7 +142,11 @@ class Robot:
         current_position_id = self.processor.get_room_id_from_coords([self.x, self.y])
 
         if self.search_type == self.NOT_INFORMED:
-            path = self.processor.depth_first_search_optimized(current_position_id)
+            if self.optimized:
+                path = self.processor.depth_first_search_optimized(current_position_id)
+            else:
+                path = self.processor.depth_first_search(current_position_id)
+
         else:
             path = self.processor.greedy_search()
 

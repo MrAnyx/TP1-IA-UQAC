@@ -5,7 +5,6 @@ from threading import *
 import time
 
 # TODO Commenter le code
-# TODO Ajouter l'exploration non informé (sans boucle) et informée
 
 b = Board()
 r = Robot(b, Robot.NOT_INFORMED)

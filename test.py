@@ -17,6 +17,3 @@ r = Robot(b, Robot.NOT_INFORMED)
 r.x = 3
 r.y = 3
 print(r.find_best_path())
-
-
-## TODO Ajouter l'exploration

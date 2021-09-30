@@ -76,6 +76,7 @@ class Robot:
         return not_empty_room[index]
 
     def reach_selected_room(self, room_coord):
+        prev_pos = [self.x, self.y]
         if self.is_on_goal(room_coord) or not room_coord:
             return
         else:
@@ -89,6 +90,8 @@ class Robot:
                 self.move_right()
 
             self.energy -= 1
+        
+        return prev_pos
 
     def is_on_goal(self, goal):
         if [self.x, self.y] == goal:

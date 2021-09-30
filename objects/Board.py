@@ -31,13 +31,6 @@ class Board:
             for j in range(5):
                 self.board[i][j] = random.randint(0, 3)
         
-                
-    def get_board(self):
-        return self.board
-    
-    def get_performance_metric(self):
-        return self.performance_metric
-
     def random_dust(self):
         dust_prob = 0.33
 
@@ -75,6 +68,12 @@ class Board:
     def take(self, room) :
         if self.board[room[0]][room[1]] in [1, 3]:
             self.board[room[0]][room[1]] = self.board[room[0]][room[1]] - 1
+
+    def get_board(self):
+        return self.board
+    
+    def get_performance_metric(self):
+        return self.performance_metric
 
     
 

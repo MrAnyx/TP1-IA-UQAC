@@ -1,7 +1,7 @@
 from objects.Board import Board
 from objects.Window import Window
 from objects.Robot import Robot
-from threading import *
+import threading
 import time
 from utils.WindowHelper import WindowHelper
 
@@ -17,8 +17,8 @@ WindowHelper.display_board(b, w, r)
 def update_env():
     global r, b
     while r.energy > 0:
-        b.random_dust_jewel()
-        WindowHelper.display_board(b, w, r)
+        new_state = b.random_dust_jewel()
+        WindowHelper.display_updated_room(b, w, r, new_state)
 
         time.sleep(2)
 
@@ -35,21 +35,21 @@ def update_robot():
             r.clean_or_take(r.goal)
             r.is_reaching_room = False
             r.will_explore = True
-            WindowHelper.display_board(b, w, r)
+
+            WindowHelper.display_updated_room(b, w, r, [r.x, r.y])
 
         if r.is_reaching_room and r.path:
             next_room = r.processor.get_room_coords_from_id(r.path.pop(0))
-            r.reach_selected_room(next_room)
-            WindowHelper.display_board(b, w, r)
+            prev_room = r.reach_selected_room(next_room)
+            WindowHelper.display_updated_robot_position(b, w, r, prev_room, next_room)
 
         time.sleep(1)
 
 
-t1 = Thread(target=update_env, args=[])
-t2 = Thread(target=update_robot, args=[])
+t1 = threading.Thread(target=update_env, args=[])
+t2 = threading.Thread(target=update_robot, args=[])
 
 t1.start()
 t2.start()
-
 
 w.mainloop()

@@ -25,7 +25,7 @@ class Robot:
     INFORMED = 1
     NOT_INFORMED = 2
 
-    def __init__(self, board, search_type, optimized=True, energy=200):
+    def __init__(self, board, search_type, optimized=True, energy=30):
 
         # On définie la position initiale du robot de manière aléatoire dans le manoir
         self.x = random.randint(0, 4)

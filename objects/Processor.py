@@ -159,14 +159,13 @@ class Processor:
             return actions
 
         # Mémorisation du meilleur plan d'action pour l'instant
-        # Au cas où pas de résultat qui vide tout le manoir est trouvé
+        # Au cas où il n'y a pas de résultat qui vide tout le manoir est trouvé
         if (
             start_node.state.dirt_number < best_so_far["dirt_number"]
             and start_node.depth < best_so_far["cost"]
         ):
             best_so_far["dirt_number"] = start_node.state.dirt_number
             best_so_far["actions"] = actions
-            best_so_far["cost"] = start_node.depth
 
         # Si on a pas atteint la profondeur maximale (donc le coût maximum )
         if start_node.depth < max_depth:
@@ -175,7 +174,9 @@ class Processor:
             for node in self.expand(start_node):
 
                 # On appelle de manière récurssive l'algorithme DFS avec la pièce de départ
-                _tmp_actions = self.depth_first_search(node, best_so_far, actions)
+                _tmp_actions = self.depth_first_search_optimized(
+                    node, best_so_far, actions
+                )
 
                 # Si un chemin est retourné par la fonction
                 if _tmp_actions:

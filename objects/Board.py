@@ -14,6 +14,11 @@ class Board:
        3 => bijoux ET poussière
 
     La répartition des éléments dans les pièces est faite de manière pseudo-aléatoire.
+    L'environnement gère sa propre mesure de performance :
+        -> 1 pt par pièce propre
+        -> + 1 pt par bijou ramassé
+        -> - 1 pt par bijou aspiré
+
     """
 
     NOTHING = 0
@@ -23,15 +28,13 @@ class Board:
 
     def __init__(self):
         self.board = [[0 for j in range(5)] for i in range(5)]
-        # TODO : S'en servir
-        self.performance_metric = 25  # 1 point par pièce propre
-
-    def init_board(self):
-        for i in range(5):
-            for j in range(5):
-                self.board[i][j] = random.randint(0, 3)
+        self.performance_metric = 25
 
     def random_dust(self):
+        """
+        Génère de la poussière dans une pièce vide ou avec bijou avec une probabilité de 1/3.
+        Met à jour la mesure de performance en conséquence.
+        """
         dust_prob = 0.33
 
         _x = random.randint(0, 4)
@@ -42,13 +45,15 @@ class Board:
         # Add dust to current room
         if prob < dust_prob and self.board[_x][_y] not in [2, 3]:
             self.board[_x][_y] = self.board[_x][_y] + 2
-
-            # Diminuer la mesure de performance
             self.performance_metric = self.performance_metric - 1
 
         return [_x, _y]
 
     def random_jewel(self):
+        """
+        Génère un bijou dans une pièce vide ou avec poussière avec une probabilité de 1/3.
+        Mets à jour la mesure de performance en conséquence.
+        """
         jewel_prob = 0.33
 
         _x = random.randint(0, 4)
@@ -63,11 +68,18 @@ class Board:
         return [_x, _y]
 
     def random_dust_jewel(self):
+        """
+        Génére un bijou et/ou de la poussière avec une certaine probabilité chacun.
+        Retourne les positions où les élements ont été générés.
+        """
         dust_update = self.random_dust()
         jewel_update = self.random_jewel()
         return [dust_update, jewel_update]
 
     def clean(self, room):
+        """
+        Vide une pièce et met à jour la mesure de performance en conséquence.
+        """
         if self.board[room[0]][room[1]] in [1, 3]:
             # Aspirer un bijou diminue la mesure de performance
             self.performance_metric = self.performance_metric - 1
@@ -78,6 +90,10 @@ class Board:
         self.board[room[0]][room[1]] = 0
 
     def take(self, room):
+        """
+        Retire un bijou de la pièce s'il y en a un.
+        Met à jour la mesure de performance.
+        """
         if self.board[room[0]][room[1]] in [1, 3]:
             self.board[room[0]][room[1]] = self.board[room[0]][room[1]] - 1
 

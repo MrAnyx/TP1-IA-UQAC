@@ -2,7 +2,9 @@ import json
 import random
 import math
 from utils.Decorator import deprecated
-from objects.Processor import Processor
+from utils.ProcessorHelper import ProcessorHelper
+from objects.UninformedProcessor import UninformedProcessor
+from objects.InformedProcessor import InformedProcessor
 import time
 
 
@@ -41,7 +43,8 @@ class Robot:
 
         # Le processeur du robot permet d'effectuer les actions de recherche / sélection de la bonne pièce
         # Il se charge d'effectuer les calculs
-        self.processor = Processor(self.board)
+        self.uninformed_processor = UninformedProcessor(self.board)
+        self.informed_processor = InformedProcessor(self.board)
 
     # Permet de déplacer le robot d'une case vers le haut
     def move_up(self):
@@ -59,53 +62,8 @@ class Robot:
     def move_left(self):
         self.x = self.x - 1
 
-    # Cette fonction permet de connaitre l'ensemble des pièces qui contiennent de la poussière et/ou un bijou
-    def get_not_empty_room(self):
-        not_empty_room = []
-
-        # Pour chaque pièce du manoir
-        for i in range(5):
-            for j in range(5):
-
-                # Si l'état de la pièce est différent de 0, c'est à dire, si la pièce contient de la poussière et/ou un bijou
-                if self.board.get_board()[i][j] != 0:
-
-                    # On ajoute la pièce actuelle dans la liste
-                    not_empty_room.append([i, j])
-
-        # On retourne la liste des pièces qui ne sont pas vides
-        return not_empty_room
-
-    # Cette fonction permet de sélectionner la pièce la plus proche en fonction de la norme euclidienne
-    # Comme indiqué par le décorateur ci-dessous, cette fonction n'est plus utilisée
-    @deprecated
-    def select_nearest_not_empty_room(self):
-
-        #  On récupère l'ensemble des pièces qui ne sont pas vides
-        not_empty_room = self.get_not_empty_room()
-
-        # S'il n'y en a pas
-        if len(not_empty_room) == 0:
-            # On retourne -1
-            return -1
-        else:
-            # On parcourt chacune des pièces qui ne sont pas vides
-            for idx, room in enumerate(not_empty_room):
-
-                # On calcule la norme Euclidienne entre les la position du robot et la pièce
-                _min = math.sqrt(
-                    math.pow(room[0] - self.x, 2) + math.pow(room[1] - self.y, 2)
-                )
-
-                # Si la nouvelle valeur que l'on vient de calculer et inférieur à la précédente
-                if idx == 0 or _min < min:
-
-                    # On la sauvegarde l'indice et la valeur de la norme
-                    min = _min
-                    index = idx
-
-        # On retourn les coordonnées de la pièce la plus proche
-        return not_empty_room[index]
+    def position(self):
+        return [self.x, self.y]
 
     # Cette fonction permet d'atteindre une pièce en fonction de ses coordonnées
     def reach_selected_room(self, room_coord):
@@ -195,11 +153,16 @@ class Robot:
         """
         print(f"path : {self.path}")
         print(f"goal : {self.goal}")
+        print(f"will explore : {self.will_explore}")
+        print(f"is reaching goal : {self.is_reaching_room}")
         print(f"Current position coords : {[self.x, self.y]}")
+
         if self.energy > 10:
             print(f"Current energy of the robot : {self.energy}")
+
         elif self.energy > 0 and self.energy <= 10:
             print(f"I'm running out of energy, i will die soon : {self.energy}")
+
         else:
             print(f"Oops, i died ☠. I cleaned {self.room_cleaned} rooms")
 
@@ -225,7 +188,7 @@ class Robot:
             if not self._goal_is_coords(goal)
             else list(
                 map(
-                    lambda room_id: self.processor.get_room_coords_from_id(room_id),
+                    lambda room_id: ProcessorHelper.get_room_coords_from_id(room_id),
                     path,
                 )
             )
@@ -239,10 +202,10 @@ class Robot:
         """
 
         # On génère le graph correspondant à la disposition des pièces dans le manoir
-        self.processor.create_graph()
+        self.uninformed_processor.save_graph()
 
         # On récupère l'indice de la pièce ou se situe le robot en fonction de ses coordonnées actuelles
-        current_position_id = self.processor.get_room_id_from_coords([self.x, self.y])
+        current_position_id = ProcessorHelper.get_room_id_from_coords(self.position())
 
         # Si le robot n'est pas informé
         if self.search_type == self.NOT_INFORMED:
@@ -250,14 +213,26 @@ class Robot:
             # Si le robot est optimisé
             if self.optimized:
                 # On récupère le chemin vers la pièce non cide la plus proche
-                path = self.processor.depth_first_search_optimized(current_position_id)
+                path = self.uninformed_processor.depth_first_search_optimized(
+                    current_position_id
+                )
             else:
                 # Sinon, on récupère le chemin vers la première pièce non vide que l'algorithme DFS trouve
-                path = self.processor.depth_first_search(current_position_id)
+                path = self.uninformed_processor.depth_first_search(current_position_id)
 
         # Sinon, on effectue une recherche informée
         else:
-            path = self.processor.greedy_search()
+            path = self.informed_processor.greedy_search(
+                self.board.get_board(), self.position()
+            )
+
+            if len(path) != 0:
+                path = list(
+                    map(
+                        lambda coords: ProcessorHelper.get_room_id_from_coords(coords),
+                        path,
+                    )
+                )
 
         # On retourne le chemin vers la pièce
         return path
@@ -277,9 +252,13 @@ class Robot:
             self.will_explore = False
             self.is_reaching_room = True
 
-            # On sauvegarde le chemin
-            # Ici, on sauvegarde le chemin uniquement à partir de l'indice 1 car l'indice 0 correspond à la position actuelle du robot
-            self.path = path[1:]
+            if self.search_type == self.NOT_INFORMED:
+                # On sauvegarde le chemin
+                # Ici, on sauvegarde le chemin uniquement à partir de l'indice 1 car l'indice 0 correspond à la position actuelle du robot
+                self.path = path[1:]
+
+            else:
+                self.path = path
 
             # On sauvegarde le but
-            self.goal = self.processor.get_room_coords_from_id(path[-1])
+            self.goal = ProcessorHelper.get_room_coords_from_id(path[-1])

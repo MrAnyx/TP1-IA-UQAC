@@ -1,3 +1,6 @@
+from utils.ProcessorHelper import ProcessorHelper
+
+
 class WindowHelper:
     """
     Cette classe permet de gérer plus facilement l'affichage du manoir et du robot dans la fenêtre
@@ -42,17 +45,17 @@ class WindowHelper:
                     (i + 1) * 100,  # Position de l'angle inférieur droit en X
                     (j + 1) * 100,  # Position de l'angle inférieur droit en Y
                     fill=color,
-                    tags=f"rect-{robot.processor.get_room_id_from_coords([i, j])}",
+                    tags=f"rect-{ProcessorHelper.get_room_id_from_coords([i, j])}",
                 )
 
                 # On crée l'élément texte pour afficher l'indice de la pièce
                 _text = window.canvas.create_text(
                     i * 100 + 50,  # Position en X
                     j * 100 + 50,  # Position en Y
-                    text=robot.processor.get_room_id_from_coords([i, j]),
+                    text=ProcessorHelper.get_room_id_from_coords([i, j]),
                     fill="black",
                     font=("Helivica 13 bold"),
-                    tags=f"text-{robot.processor.get_room_id_from_coords([i, j])}",
+                    tags=f"text-{ProcessorHelper.get_room_id_from_coords([i, j])}",
                 )
 
         # On affiche le robot au centre de la pièce ou il se trouve
@@ -62,7 +65,7 @@ class WindowHelper:
             (robot.x * 100) + 75,
             (robot.y * 100) + 75,
             fill="#888",
-            tags=f"robot-{robot.processor.get_room_id_from_coords([robot.x, robot.y])}",
+            tags=f"robot-{ProcessorHelper.get_room_id_from_coords(robot.position())}",
         )
 
         # On update le canvas pour que les nouvelles modifs soient prises en compte
@@ -77,11 +80,11 @@ class WindowHelper:
 
         # On supprime le précédent rectangle correspondant à la pièce qui a changé d'état
         window.canvas.delete(
-            f"rect-{robot.processor.get_room_id_from_coords(new_state)}",
+            f"rect-{ProcessorHelper.get_room_id_from_coords(new_state)}",
         )
         # On supprime le précédent texte correspondant à l'indice de la pièce qui a changé d'état
         window.canvas.delete(
-            f"text-{robot.processor.get_room_id_from_coords(new_state)}",
+            f"text-{ProcessorHelper.get_room_id_from_coords(new_state)}",
         )
 
         color = None
@@ -107,17 +110,17 @@ class WindowHelper:
             (new_state[0] + 1) * 100,  # Position de l'angle inférieur droit en X
             (new_state[1] + 1) * 100,  # Position de l'angle inférieur droit en Y
             fill=color,
-            tags=f"rect-{robot.processor.get_room_id_from_coords(new_state)}",
+            tags=f"rect-{ProcessorHelper.get_room_id_from_coords(new_state)}",
         )
 
         # On crée l'élément texte pour afficher l'indice de la pièce
         _text = window.canvas.create_text(
             new_state[0] * 100 + 50,  # Position en X
             new_state[1] * 100 + 50,  # Position en Y
-            text=robot.processor.get_room_id_from_coords(new_state),
+            text=ProcessorHelper.get_room_id_from_coords(new_state),
             fill="black",
             font=("Helivica 13 bold"),
-            tags=f"text-{robot.processor.get_room_id_from_coords(new_state)}",
+            tags=f"text-{ProcessorHelper.get_room_id_from_coords(new_state)}",
         )
 
         # Si le robot est situé dans la pièce qui a changé d'état, on affiche a nouveau le robot pour qu'il soit visible dans le canvas
@@ -125,7 +128,7 @@ class WindowHelper:
 
             # On supprime le précédent robot (à son ancienne position)
             window.canvas.delete(
-                f"robot-{robot.processor.get_room_id_from_coords(new_state)}",
+                f"robot-{ProcessorHelper.get_room_id_from_coords(new_state)}",
             )
 
             # On crée le rectangle correspondant au robot à sa nouvelle position
@@ -135,7 +138,7 @@ class WindowHelper:
                 (robot.x * 100) + 75,  # Position de l'angle inférieur droit en X
                 (robot.y * 100) + 75,  # Position de l'angle inférieur droit en Y
                 fill="#888",
-                tags=f"robot-{robot.processor.get_room_id_from_coords([robot.x, robot.y])}",
+                tags=f"robot-{ProcessorHelper.get_room_id_from_coords([robot.x, robot.y])}",
             )
 
         # On update le canvas pour que les nouvelles modifs soient prises en compte
@@ -149,7 +152,7 @@ class WindowHelper:
 
         # On supprime le précédent robot (à son ancienne position)
         window.canvas.delete(
-            f"robot-{robot.processor.get_room_id_from_coords(prev_room)}",
+            f"robot-{ProcessorHelper.get_room_id_from_coords(prev_room)}",
         )
 
         # On crée le rectangle correspondant au robot à sa nouvelle position
@@ -159,7 +162,7 @@ class WindowHelper:
             (next_room[0] * 100) + 75,  # Position de l'angle inférieur droit en X
             (next_room[1] * 100) + 75,  # Position de l'angle inférieur droit en Y
             fill="#888",
-            tags=f"robot-{robot.processor.get_room_id_from_coords(next_room)}",
+            tags=f"robot-{ProcessorHelper.get_room_id_from_coords(next_room)}",
         )
 
         # On update le canvas pour que les nouvelles modifs soient prises en compte

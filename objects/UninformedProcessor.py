@@ -1,9 +1,11 @@
 from objects.Graph import Graph
 from objects.Board import Board
+from utils.ProcessorHelper import ProcessorHelper
 import math
+import random
 
 
-class Processor:
+class UninformedProcessor:
     """
     Cette classe permet d'effectuer les calculs relatifs au robot
     Elle permet de récupérer l'indice d'une pièce à partir de coordonnées et inversement
@@ -14,44 +16,8 @@ class Processor:
         self.graph = None
         self.board = board
 
-    # Permet de convertir l'indice d'une pièce en coordonnées
-    def get_room_coords_from_id(self, id):
-        """
-        Par exemple, l'indice 2 correspond aux coordonnées : [0, 2]
-        """
-        return [id % 5, math.floor(id / 5)]
-
-    # Permet de convertir les coordonnées d'une pièce en indice
-    def get_room_id_from_coords(self, coords):
-        """
-        Par exemple, les coordonnées [1, 0] correspondent à l'indice 5
-        """
-        return coords[0] + (coords[1] * 5)
-
-    # Permet de récupérer les voisins d'une case à partir du board initial
-    def get_neighbor_rooms(self, current):
-        neighbor = []
-
-        # Si on n'est pas sur le bord de gauche
-        if current[0] > 0:
-            neighbor.append([current[0] - 1, current[1]])  # [x-1, y]
-
-        # Si on n'est pas sur le bord de droite
-        if current[0] < 4:
-            neighbor.append([current[0] + 1, current[1]])  # [x+1, y]
-
-        # Si on n'est pas sur le bord du haut
-        if current[1] > 0:
-            neighbor.append([current[0], current[1] - 1])  # [x, y-1]
-
-        # Si on n'est pas sur le bord du bas
-        if current[1] < 4:
-            neighbor.append([current[0], current[1] + 1])  # [x, y+1]
-
-        return neighbor
-
     # Crée le graph à partir des voisin de chaque pièce
-    def create_graph(self):
+    def save_graph(self):
         """
         Renvoie un dictionnaire de type :
         {
@@ -59,20 +25,7 @@ class Processor:
             ...
         }
         """
-        graph = {}
-        # On parcourt toutes les pièces
-        for i in range(5):
-            for j in range(5):
-                # On récupère les voisins de la pièce actuelle
-                neighbors = self.get_neighbor_rooms([i, j])
-                # On récupère son indice
-                id = self.get_room_id_from_coords([i, j])
-                # Pour l'ensemble des voisins de la pièce actuelle, on convertit les coordonnées en indice avec la fonction map
-                neighbors_ids = list(
-                    map(lambda el: self.get_room_id_from_coords(el), neighbors)
-                )
-                # Pour la pièce actuelle, on indique les voisins possibles
-                graph[id] = neighbors_ids
+        graph = ProcessorHelper.create_graph()
 
         # On modifie l'état interne du processeur en sauvegardant le graph
         self.graph = Graph(graph)
@@ -89,7 +42,7 @@ class Processor:
         """
 
         # On récupère les coordonnées de la position placée en paramètre
-        [start_x, start_y] = self.get_room_coords_from_id(start_key)
+        [start_x, start_y] = ProcessorHelper.get_room_coords_from_id(start_key)
 
         # On ajoute la nouvelle position à lé précédente afin de retourner le chemin final à la fin de la fonction récurssive
         path = path + [start_key]
@@ -134,7 +87,7 @@ class Processor:
         """
 
         # On récupère les coordonnées de la position placée en paramètre
-        [start_x, start_y] = self.get_room_coords_from_id(start_key)
+        [start_x, start_y] = ProcessorHelper.get_room_coords_from_id(start_key)
 
         # On ajoute la nouvelle position à lé précédente afin de retourner le chemin final à la fin de la fonction récurssive
         path = path + [start_key]
@@ -173,7 +126,3 @@ class Processor:
 
         # On retourne le chemin le plus court
         return shortest_path
-
-    # Exploration informée avec une heuristique (norme entre deux cases)
-    def greedy_search(self):
-        pass

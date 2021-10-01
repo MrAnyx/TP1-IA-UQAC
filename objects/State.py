@@ -3,6 +3,15 @@ from objects.Board import Board
 
 
 class State:
+    """
+    La classe State représente un état associé à un noeud lors de l'exploration.
+    Un état possède les informations suivantes :
+        -> La position de l'agent
+        -> Le nombre de pièce qui ne sont pas propres
+        -> Ce que contient la pièce courante
+        -> La liste des pièces qui n'étaient pas propres mais qui le sont en arrivant à cet état.
+    """
+
     def __init__(self, position, dirt_number, room_state, cleaned_rooms=[]):
         self.position = position
         self.dirt_number = dirt_number
@@ -10,9 +19,14 @@ class State:
         self.cleaned_rooms = cleaned_rooms
 
     def next_state(self, action, board):
+        """
+        Retourne le prochain état à partir de l'état courant,
+        d'une action (action) et des croyances sur l'environnement (board).
+        """
 
         state = None
 
+        # Si on se déplace, la position et l'état de la pièce changent.
         if action in [
             Agent.MOVE_UP,
             Agent.MOVE_DOWN,
@@ -41,6 +55,7 @@ class State:
                 next_pos, self.dirt_number, next_room_state, self.cleaned_rooms
             )
 
+        # Si on aspire ou ramasse, tout change sauf la position.
         elif action == Agent.CLEAN:
 
             next_dirt_number = self.dirt_number

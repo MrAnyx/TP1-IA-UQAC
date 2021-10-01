@@ -1,7 +1,4 @@
 import random
-import math
-
-# from Node import Node
 
 
 class Board:

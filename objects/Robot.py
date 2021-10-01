@@ -6,6 +6,7 @@ from objects.Processor import Processor
 import time
 
 
+# TODO Commenter le code
 class Robot:
     """
     La classe Robot représent l'agent intelligent qui peut intéragir et parcourir son environnement.
@@ -25,7 +26,7 @@ class Robot:
         self.room_cleaned = 0
         self.search_type = search_type
 
-        # Permet de savoir si le robot est en train de rejoindre une  ou en train d'effectuer une exploration
+        # Permet de savoir si le robot est en train de rejoindre une * ou en train d'effectuer une exploration
         self.will_explore = True
         self.is_reaching_room = False
 
@@ -49,8 +50,7 @@ class Robot:
     def move_left(self):
         self.x = self.x - 1
 
-    @deprecated
-    def _get_not_empty_room(self):
+    def get_not_empty_room(self):
         not_empty_room = []
         for i in range(5):
             for j in range(5):
@@ -90,7 +90,7 @@ class Robot:
                 self.move_right()
 
             self.energy -= 1
-        
+
         return prev_pos
 
     def is_on_goal(self, goal):
@@ -108,6 +108,9 @@ class Robot:
         self.room_cleaned += 1
         self.board.get_board()[goal[0]][goal[1]] = 0
         self.goal = None
+
+        r.is_reaching_room = False
+        r.will_explore = True
 
     def display_current_state(self):
         print(f"path : {self.path}")
@@ -157,7 +160,6 @@ class Robot:
 
     def explore(self):
         print("I'm exploring the board to find the best path")
-        # time.sleep(3)
 
         path = self.find_best_path()
 

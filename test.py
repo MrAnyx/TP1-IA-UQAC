@@ -4,6 +4,8 @@ from objects.Robot import Robot
 import json
 from objects.Graph import Graph
 
+# TODO Commenter le code
+
 b = Board()
 b.board = [
     [0, 0, 0, 0, 0],

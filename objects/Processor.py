@@ -3,6 +3,8 @@ from objects.Board import Board
 import math
 
 
+# TODO Commenter le code
+
 class Processor:
     def __init__(self, board):
         self.graph = None

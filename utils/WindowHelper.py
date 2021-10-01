@@ -1,3 +1,6 @@
+# TODO Commenter le code
+
+
 class WindowHelper:
     @staticmethod
     def display_board(board, window, robot):

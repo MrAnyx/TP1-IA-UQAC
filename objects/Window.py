@@ -1,6 +1,7 @@
 from tkinter import *
 
 
+# TODO Commenter le code
 class Window:
     """
     La classe Window permet d'afficher le résultat de l'environement à un instant t

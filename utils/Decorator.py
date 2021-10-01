@@ -1,3 +1,6 @@
+# TODO Commenter le code
+
+
 def deprecated(func):
     def wrapper(*args, **kwargs):
         print(

@@ -160,7 +160,7 @@ class Robot:
         # time.sleep(3)
 
         path = self.find_best_path()
-
+        print(path)
         if path:
             self.will_explore = False
             self.is_reaching_room = True

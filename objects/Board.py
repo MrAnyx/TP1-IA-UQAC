@@ -24,7 +24,7 @@ class Board:
     def __init__(self):
         self.board = [[0 for j in range(5)] for i in range(5)]
         #TODO : S'en servir
-        self.performance_metric = 0
+        self.performance_metric = 25 # 1 point par pièce propre
 
     def init_board(self):
         for i in range(5):
@@ -43,6 +43,11 @@ class Board:
         if prob < dust_prob and self.board[_x][_y] not in [2, 3]:
             self.board[_x][_y] = self.board[_x][_y] + 2
 
+            # Diminuer la mesure de performance
+            self.performance_metric = self.performance_metric - 1
+
+        return [_x, _y]
+
     def random_jewel(self):
         jewel_prob = 0.33
 
@@ -51,23 +56,37 @@ class Board:
 
         prob = random.random()
 
-        # Add dust to current room
+        # Add jewel to current room
         if prob < jewel_prob and self.board[_x][_y] not in [1, 3]:
             self.board[_x][_y] = self.board[_x][_y] + 1
+        
+        return [_x, _y]
 
     def random_dust_jewel(self):
-        self.random_dust()
-        self.random_jewel()
+        dust_update = self.random_dust()
+        jewel_update = self.random_jewel()
+        return [dust_update, jewel_update]
 
-    #TODO : mettre à jour la mesure de performance pour les methodes clean and take
+    
 
     def clean(self, room) : 
-        if room[0] in range(5) and room[1] in range(5) :
-            self.board[room[0]][room[1]] = 0
+        if self.board[room[0]][room[1]] in [1, 3] : 
+            # Aspirer un bijou diminue la mesure de performance
+            self.performance_metric = self.performance_metric - 1
+        elif self.board[room[0]][room[1]] == 2 :
+            # Aspirer de la poussiere augmente la mesure de performance
+            self.performance_metric = self.performance_metric + 1
+        # Dans tous les cas, la piece est videe
+        self.board[room[0]][room[1]] = 0
+
+        
     
     def take(self, room) :
         if self.board[room[0]][room[1]] in [1, 3]:
             self.board[room[0]][room[1]] = self.board[room[0]][room[1]] - 1
+
+            # Ramasser un bijou augmente la mesure de performance
+            self.performance_metric = self.performance_metric + 1
 
     def get_board(self):
         return self.board

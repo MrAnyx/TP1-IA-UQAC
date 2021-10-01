@@ -2,7 +2,7 @@
 
 ## Prérequis
 
-- Python
+- Python (3.9 idéalement)
 - PIP
 ## Installation
 

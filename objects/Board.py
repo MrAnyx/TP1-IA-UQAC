@@ -37,7 +37,7 @@ class Board:
 
     def random_dust_jewel(self):
         """
-        Cette fonction permet de séléctionner une pièce de manière aléatoire et d'y positionner de la poussière ou un bijou de manière aléatoire également
+        Cette fonction permet de sélectionner une pièce de manière aléatoire et d'y positionner de la poussière ou un bijou de manière aléatoire également
         Dans le cas ou une pièce contient déjà de la poussière et qu'on y ajoute un bijou, alors la pièce finale contiendra de la poussière ET un bijou
         """
 

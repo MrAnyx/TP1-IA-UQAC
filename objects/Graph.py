@@ -5,6 +5,13 @@ class Graph:
     """
     Cette classe permet de symboliser le graph entre les pièces
     Le graph à proprement parlé est un dictionnaire python contenant en clé, l'indice de la pièce actuelle et en valeur, l'ensemble de ses voisins
+
+    {
+        "0" : [1, 5],
+        "1" : [0, 6, 2],
+        ...
+    }
+
     L'indice de la pièce actuelle est calculé en faisant : x + (y * 5)
     Par exemple, dans l'exemple suivant :
         - la pièce [0, 0] aura l'indice 0

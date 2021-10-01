@@ -1,5 +1,5 @@
-from numpy import sqrt, zeros, array
 import random
+import math
 
 """
     La classe triplet permet 
@@ -31,12 +31,10 @@ class triplet:
 def genTableau():
     tab = zeros((5,5), int)
 
-    print("Indices poussières :")
     for i in range(0, 2):
         x = random.randint(0, 4)
         y = random.randint(0, 4)
         tab[x,y] = 33
-        print(x, ", ", y)
 
     return tab
 
@@ -49,6 +47,7 @@ def closeDirt(tab, pos):
                 a = sqrt((pos[0] - i)**2 + (pos[1] - j)**2)
                 if a < dist:
                     goal = [i,j]
+                    dist = heuristique(pos, goal)
 
     return goal
 
@@ -65,12 +64,7 @@ def getVoisins(pos):
     return indVoisins
 
 def heuristique(pos, goal):
-    return sqrt((pos[0] - goal[0])**2 + sqrt((pos[1] - goal[1])**2))
-    
-
-def distStart(pos, start):
-    print(abs(pos[0] - start[0]) + abs(pos[1] - start[1]))
-    return abs(pos[0] - start[0]) + abs(pos[1] - start[1])
+    return math.sqrt((pos[0] - goal[0])**2 + sqrt((pos[1] - goal[1])**2))
 
 def fin(pos, goal):
     if (pos[0] == goal[0]) and (pos[1] == goal[1]):
@@ -85,12 +79,12 @@ def cheminOpti(tab):
     a = random.randint(0, 4)
     b = random.randint(0, 4)
     position = [a,b]
-    print("Position de départ : ", position)
 
     #On détermine le prochain élément à aller ramasser
     goal = closeDirt(tab, position)
     path = []
 
+    #Boucle qui s'arrête lorsque le robot est passé sur toutes les cases pleines
     while(goal != [-1, -1]):
 
         openIndex = []
@@ -100,6 +94,7 @@ def cheminOpti(tab):
         index = 0
         arbre.append(triplet(heuristique(position, goal), position, -1, -1))
         
+        #Boucle qui s'arrête lorsque le robot est arrivé sur une case pleine
         while(fin(position, goal)):
             
             # Indexation des fils directs du noeud

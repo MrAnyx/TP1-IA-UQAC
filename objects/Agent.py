@@ -5,6 +5,12 @@ from objects.Node import Node
 
 
 class Agent:
+    """
+    La classe Agent représente l'agent intelligent qui peut intéragir et parcourir son environnement.
+    Il possède des coordonnées x et y afin de pouvoir le localiser.
+    Il possède également un compteur car, chacune des actions qu'il fait lui coût un point d'énergie
+    Il possède un capteur pour observer son environnement et un effecteur pour agir sur celui-ci
+    """
 
     MOVE_UP = 1
     MOVE_DOWN = 2

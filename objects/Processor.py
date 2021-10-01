@@ -162,7 +162,7 @@ class Processor:
             actions = actions + [start_node.action]
 
         # But et critère d'arrêt
-        max_depth = 10
+        max_depth = 15
         if start_node.state.dirt_number == 0:
             best_so_far["actions"] = actions
             best_so_far["dirt_number"] = 0

@@ -23,14 +23,14 @@ class Board:
 
     def __init__(self):
         self.board = [[0 for j in range(5)] for i in range(5)]
-        #TODO : S'en servir
-        self.performance_metric = 25 # 1 point par pièce propre
+        # TODO : S'en servir
+        self.performance_metric = 25  # 1 point par pièce propre
 
     def init_board(self):
         for i in range(5):
             for j in range(5):
                 self.board[i][j] = random.randint(0, 3)
-        
+
     def random_dust(self):
         dust_prob = 0.33
 
@@ -59,7 +59,7 @@ class Board:
         # Add jewel to current room
         if prob < jewel_prob and self.board[_x][_y] not in [1, 3]:
             self.board[_x][_y] = self.board[_x][_y] + 1
-        
+
         return [_x, _y]
 
     def random_dust_jewel(self):
@@ -67,21 +67,17 @@ class Board:
         jewel_update = self.random_jewel()
         return [dust_update, jewel_update]
 
-    
-
-    def clean(self, room) : 
-        if self.board[room[0]][room[1]] in [1, 3] : 
+    def clean(self, room):
+        if self.board[room[0]][room[1]] in [1, 3]:
             # Aspirer un bijou diminue la mesure de performance
             self.performance_metric = self.performance_metric - 1
-        elif self.board[room[0]][room[1]] == 2 :
+        elif self.board[room[0]][room[1]] == 2:
             # Aspirer de la poussiere augmente la mesure de performance
             self.performance_metric = self.performance_metric + 1
         # Dans tous les cas, la piece est videe
         self.board[room[0]][room[1]] = 0
 
-        
-    
-    def take(self, room) :
+    def take(self, room):
         if self.board[room[0]][room[1]] in [1, 3]:
             self.board[room[0]][room[1]] = self.board[room[0]][room[1]] - 1
 
@@ -90,10 +86,6 @@ class Board:
 
     def get_board(self):
         return self.board
-    
+
     def get_performance_metric(self):
         return self.performance_metric
-
-    
-
-   

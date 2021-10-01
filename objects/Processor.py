@@ -15,77 +15,23 @@ class Processor:
     def get_room_id_from_coords(self, coords):
         return coords[0] + (coords[1] * 5)
 
-    # def get_neighbor_rooms(self, current):
-    #     neighbor = []
-    #     if current[0] > 0:
-    #         neighbor.append([current[0] - 1, current[1]])  # [x-1, y]
-
-    #     if current[0] < 4:
-    #         neighbor.append([current[0] + 1, current[1]])  # [x+1, y]
-
-    #     if current[1] > 0:
-    #         neighbor.append([current[0], current[1] - 1])  # [x, y-1]
-
-    #     if current[1] < 4:
-    #         neighbor.append([current[0], current[1] + 1])  # [x, y+1]
-
-    #     return neighbor
-
-    # # Les performances de cet algorithme dépendent de la manière dont le graph est construit
-    # # Les noeuds seront pris dans l'ordre donc il ce peut que les solutions soient différentes selon le graph
-    # # Cet algorithme retourne la première solution qu'il trouve (ce n'est pas forcement la plus optimisée)
-    # def depth_first_search(self, start_key, path=[]):
-    #     [start_x, start_y] = self.get_room_coords_from_id(start_key)
-
-    #     path = path + [start_key]
-    #     if self.board.get_board()[start_x][start_y] in [
-    #         Board.DUST,
-    #         Board.JEWEL,
-    #         Board.BOTH,
-    #     ]:
-    #         return path
-
-    #     for node in self.graph.get_node_neighbors(start_key):
-    #         if node not in path:
-    #             _tmp_path = self.depth_first_search(node, path)
-    #             if _tmp_path:
-    #                 return _tmp_path
-
-    #     return None
-
-    # # Exploration non informée
-    # # Ici, l'algo retourne la solution la plus courte entre deux noeuds
-    # def depth_first_search_optimized(self, start_key, path=[]):
-    #     [start_x, start_y] = self.get_room_coords_from_id(start_key)
-
-    #     path = path + [start_key]
-    #     if self.board.get_board()[start_x][start_y] in [
-    #         Board.DUST,
-    #         Board.JEWEL,
-    #         Board.BOTH,
-    #     ]:
-    #         return path
-
-    #     shortest_path = None
-    #     for node in self.graph.get_node_neighbors(start_key):
-    #         if node not in path:
-    #             _tmp_path = self.depth_first_search_optimized(node, path)
-    #             if _tmp_path:
-    #                 if not shortest_path or len(_tmp_path) < len(shortest_path):
-    #                     shortest_path = _tmp_path
-
-    #     return shortest_path
-
     # Exploration informée avec une heuristique (norme entre deux cases)
     def greedy_search(self):
         pass
 
     def expand(self, node):
+        """
+        A partir d'un noeud, renvoie les noeuds voisins.
+        Certaines actions ne sont volontairement pas explorés.
+        Par exemple, s'il y a de la poussière sur la position du robot,
+        la seule issue est d'aspirer.
+        """
         sucessors = []
 
         # Pièce vide = les noeuds sucesseurs sont les déplacements vers les cases voisines
         if node.state.room_state == Board.NOTHING:
 
+            # Vérifie si le mouvement est possible et évite les retours en arrière inutiles
             if node.state.position[0] > 0 and node.action != Agent.MOVE_RIGHT:
                 # [x-1, y]
                 sucessors.append(
@@ -126,7 +72,7 @@ class Processor:
                     )
                 )
 
-        # Piece ou seulement le bijou a ete ramasse, il reste de la poussieree
+        # Pièce avec de la poussière = un successeur : aspirer
         elif node.state.room_state == Board.DUST:
 
             sucessors.append(

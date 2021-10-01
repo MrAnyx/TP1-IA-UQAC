@@ -1,9 +1,10 @@
 import random
+from numpy import zeros
 import math
 
 """
     La classe triplet permet d'indexer notre graphe :
-     - chaque élément contient sa valeur (f ou heuristique)
+     - chaque élément contient sa valeur (f ou heuristique) ainsi que sa position dans le tableau (pièce du manoir)
      - l'adresse de son "fils de gauche" (fils à gauche dans le graphe)
      - l'adresse de son premier "frère de droite" (noeud frère directement à droite dans le graphe)
 """
@@ -31,6 +32,7 @@ class triplet:
                 return i
         return -1
 
+"""A DEL : permet de générer un tableau avec deux poussières"""
 def genTableau():
     tab = zeros((5,5), int)
 
@@ -44,15 +46,14 @@ def genTableau():
 #Retourne la case pleine la plus proche
 def closeDirt(tab, pos):
     dist = 6
-    goal = [-1, -1]
+    goal = []
     for i in range (0, 5):
         for j in range(0,5):
             if tab[i][j] == 33:
-                a = sqrt((pos[0] - i)**2 + (pos[1] - j)**2)
+                a = math.sqrt((pos[0] - i)**2 + (pos[1] - j)**2)
                 if a < dist:
-                    goal = [i,j]
-                    dist = heuristique(pos, goal)
-
+                    goal.append([i,j])
+                    dist = a
     return goal
 
 #Retourne les indices des voisins d'une case
@@ -70,7 +71,7 @@ def getVoisins(pos):
 
 #Calcule l'heuristique c'est à dire la distance entre le noeud actuel et l'arrivée
 def heuristique(pos, goal):
-    return math.sqrt((pos[0] - goal[0])**2 + math.sqrt((pos[1] - goal[1])**2))
+    return math.sqrt((pos[0] - goal[0])**2 + (pos[1] - goal[1])**2)
 
 #Vérifie si on est arrivée sur une case pleine
 def fin(pos, goal):
@@ -78,6 +79,7 @@ def fin(pos, goal):
         return False
     return True
 
+"""A DEL : permet de vider une case"""
 def aspire(tab, pos):
     tab[pos[0],pos[1]] = 0
     return tab
@@ -85,27 +87,29 @@ def aspire(tab, pos):
 #Fonction qui renvoie le chemin optimal
 def cheminOpti(tab):
 
-    """A DELETE"""
+    """A DEL : permet de se placer sur le tableau de manière aléatoire"""
     a = random.randint(0, 4)
     b = random.randint(0, 4)
+    
+    #On récupère la position dans le tableau
     position = [a,b]
 
-    #On détermine le prochain élément à aller ramasser
+    """A DEL : permet de récupérer la liste des cases sales"""
     goal = closeDirt(tab, position)
+
     path = []
 
     #Boucle qui s'arrête lorsque le robot est passé sur toutes les cases pleines
-    while(goal != [-1, -1]):
-
+    for k in range(len(goal)):
         openIndex = []
         closeIndex = []
         arbre = []
         indice = 0
         index = 0
-        arbre.append(triplet(heuristique(position, goal), position, -1, -1))
+        arbre.append(triplet(heuristique(position, goal[k]), position, -1, -1))
         
         #Boucle qui s'arrête lorsque le robot est arrivé sur une case pleine
-        while(fin(position, goal)):
+        while(fin(position, goal[k])):
             
             # Indexation des fils directs du noeud
             indice += 1
@@ -122,8 +126,8 @@ def cheminOpti(tab):
                 if keep:
                     indice += 1
                     openIndex.append(indice)
-                    arbre.append(triplet(heuristique(posVois[i], goal), posVois[i], -1, indice))
-            arbre.append(triplet(heuristique(posVois[-1], goal), posVois[-1], -1, -1))
+                    arbre.append(triplet(heuristique(posVois[i], goal[k]), posVois[i], -1, indice))
+            arbre.append(triplet(heuristique(posVois[-1], goal[k]), posVois[-1], -1, -1))
 
             # Changement du noeud vers celui avec le meilleur f
             f = 26
@@ -144,7 +148,6 @@ def cheminOpti(tab):
         
         path.append("action")
         tab = aspire(tab, position)
-        goal = closeDirt(tab, position)
 
     return path
 

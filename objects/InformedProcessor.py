@@ -51,7 +51,7 @@ class InformedProcessor:
         self.graph = Graph(graph)
 
     # Fonction qui renvoie le chemin optimal
-    def cheminOpti(self, board, position):
+    def greedy_search(self, board, position):
 
         graph = ProcessorHelper.create_graph()
         goal = self.closeDirt(board, position)
@@ -125,8 +125,4 @@ class InformedProcessor:
                     if f > 25:
                         break
 
-        return path
-
-    def greedy_search(self, board, current_position):
-        path = self.cheminOpti(board, current_position)
         return path

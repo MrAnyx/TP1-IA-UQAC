@@ -4,10 +4,10 @@ import random
 import math
 
 """
-    La classe triplet permet d'indexer notre graphe :
-     - chaque élément contient sa valeur (f ou heuristique) ainsi que sa position dans le tableau (pièce du manoir)
-     - l'adresse de son "fils de gauche" (fils à gauche dans le graphe)
-     - l'adresse de son premier "frère de droite" (noeud frère directement à droite dans le graphe)
+La classe triplet permet d'indexer notre graphe :
+    - chaque élément contient sa valeur (f ou heuristique) ainsi que sa position dans le tableau (pièce du manoir)
+    - l'adresse de son "fils de gauche" (fils à gauche dans le graphe)
+    - l'adresse de son premier "frère de droite" (noeud frère directement à droite dans le graphe)
 """
 
 

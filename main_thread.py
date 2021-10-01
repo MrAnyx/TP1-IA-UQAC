@@ -11,7 +11,7 @@ from utils.ProcessorHelper import ProcessorHelper
 
 # Création des objets représentant l'expérience
 b = Board()  # Correspond au manoir
-r = Robot(b, Robot.INFORMED)  # Correspond à notre agent intelligent
+r = Robot(b, Robot.NOT_INFORMED)  # Correspond à notre agent intelligent
 w = Window(500, 500, False, "TP1 IA", b, r)  # Objet pour gérer notre fenêtre
 
 # Premier affichage du manoir dans la fenêtre

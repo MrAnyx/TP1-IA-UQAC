@@ -2,8 +2,6 @@ import random
 import math
 from utils.Decorator import deprecated
 
-# TODO Commenter le code
-
 
 class Board:
     """

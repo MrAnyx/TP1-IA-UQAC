@@ -1,10 +1,12 @@
 # Auteur : Robin Bidanchon
 
-from objects.Graph import Graph
-from objects.Board import Board
-from utils.ProcessorHelper import ProcessorHelper
 import math
 import random
+
+from utils.ProcessorHelper import ProcessorHelper
+
+from objects.Board import Board
+from objects.Graph import Graph
 
 
 class UninformedProcessor:

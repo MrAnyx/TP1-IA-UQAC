@@ -1,4 +1,4 @@
-# Atueur : Vasco Andréassian--Orengo, Robin Bidanchon
+# Auteur : Vasco Andréassian--Orengo, Robin Bidanchon
 
 
 class Triplet:

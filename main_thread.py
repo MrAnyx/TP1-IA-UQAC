@@ -1,13 +1,13 @@
 # Auteur : Robin Bidanchon
 
-from objects.Board import Board
-from objects.Window import Window
-from objects.Robot import Robot
 import threading
 import time
-from utils.WindowHelper import WindowHelper
-from utils.ProcessorHelper import ProcessorHelper
 
+from objects.Board import Board
+from objects.Robot import Robot
+from objects.Window import Window
+from utils.ProcessorHelper import ProcessorHelper
+from utils.WindowHelper import WindowHelper
 
 # Création des objets représentant l'expérience
 b = Board()  # Correspond au manoir

@@ -1,7 +1,8 @@
 # Auteur : Robin Bidanchon
 
-import random
 import math
+import random
+
 from utils.Decorator import deprecated
 
 

@@ -1,11 +1,13 @@
 # Autheur : Vasco Andréassian--Orengo, Robin Bidanchon
 
 
-import random
 import math
+import random
+
 from utils.ProcessorHelper import ProcessorHelper
-from objects.Triplet import Triplet
+
 from objects.Graph import Graph
+from objects.Triplet import Triplet
 
 
 class InformedProcessor:

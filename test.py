@@ -1,10 +1,11 @@
 # Auteur : Robin Bidanchon
 
-from objects.Board import Board
-from objects.Window import Window
-from objects.Robot import Robot
 import json
+
+from objects.Board import Board
 from objects.Graph import Graph
+from objects.Robot import Robot
+from objects.Window import Window
 
 # Ce fichier permet de simplement tester des fonctionnalités en cours de développement
 

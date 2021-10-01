@@ -1,13 +1,15 @@
 # Auteur : Robin Bidanchon
 
 import json
-import random
 import math
+import random
+import time
+
 from utils.Decorator import deprecated
 from utils.ProcessorHelper import ProcessorHelper
-from objects.UninformedProcessor import UninformedProcessor
+
 from objects.InformedProcessor import InformedProcessor
-import time
+from objects.UninformedProcessor import UninformedProcessor
 
 
 class Robot:

@@ -1,7 +1,7 @@
 # Auteur : Vasco Andréassian--Orengo
 
-import random
 import math
+import random
 
 """
 La classe triplet permet d'indexer notre graphe :

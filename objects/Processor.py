@@ -96,6 +96,9 @@ class Processor:
         return sucessors
 
     def get_board_dirt_number(self):
+        """
+        Renvoie le nombre de pièce non propres du manoir.
+        """
         dirt_number = 0
         for row in range(5):
             for col in range(5):
@@ -104,14 +107,21 @@ class Processor:
         return dirt_number
 
     def depth_first_search(self, start_node, best_so_far, actions=[]):
+        """
+        Execute l'algorithme d'exploration Depth First Search.
+        L'objectif est de trouver une série d'actions qui rend le manoir
+        propre. L'algorithme se limite à une coût maximum prédéfini, s'il
+        ne trouve pas de résultat en dessous de ce coût, il renvoie le premier
+        meilleur résultat qu'il a rencontré, celui qui donne le plus grand nombre de
+        pièces vidées.
+        """
+
         if start_node.action:
             actions = actions + [start_node.action]
 
         # But et critère d'arrêt
         max_depth = 15
         if start_node.state.dirt_number == 0:
-            best_so_far["actions"] = actions
-            best_so_far["dirt_number"] = 0
             return actions
 
         # Mémorisation du meilleur plan d'action pour l'instant

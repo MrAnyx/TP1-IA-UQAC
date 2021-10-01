@@ -1,4 +1,12 @@
 class Node:
+    """
+    Représente un noeud de notre graphe ou arbre d'exploration.
+    Possède un état, la dernière action qui dirige vers ce noeud,
+    un noeud parent et des noeuds enfants.
+    Possède également une profondeur qui représente également notre
+    coût de chemin.
+    """
+
     def __init__(self, state, parent=None, action=None):
         # Etat
         self.state = state

@@ -12,14 +12,14 @@ class Agent:
     Il possède un capteur pour observer son environnement et un effecteur pour agir sur celui-ci
     """
 
-    MOVE_UP = 1
-    MOVE_DOWN = 2
-    MOVE_RIGHT = 3
-    MOVE_LEFT = 4
-    TAKE = 5
-    CLEAN = 6
+    MOVE_UP = "UP"
+    MOVE_DOWN = "DOWN"
+    MOVE_RIGHT = "RIGHT"
+    MOVE_LEFT = "LEFT"
+    TAKE = "TAKE"
+    CLEAN = "CLEAN"
 
-    def __init__(self, board, start_state, processor, energy=200):
+    def __init__(self, board, start_state, processor, optimized=True, energy=200):
         self.x = random.randint(0, 4)
         self.y = random.randint(0, 4)
         self.sensor = Sensor(board)
@@ -27,6 +27,7 @@ class Agent:
         self.energy = energy
         self.start_state = start_state
         self.processor = processor
+        self.optimized = optimized
 
     ### Actions possibles ###
 
@@ -62,21 +63,41 @@ class Agent:
         pass
 
     def choose_an_action(self):
+        # Initialisation du processeur
         self.processor.board = self.board_state
+
+        # Initialisation de l'état initial
         self.start_state.position = [self.x, self.y]
         self.start_state.dirt_number = self.processor.get_board_dirt_number()
         self.start_state.room_state = self.board_state[self.x][self.y]
         self.start_state.cleaned_rooms = []
 
+        # Initialisation du noeud racine
         start_node = Node(self.start_state)
-        best_so_far = {
-            "dirt_number": self.processor.get_board_dirt_number(),
-            "actions": [],
-        }
 
-        self.actions = None
-        self.actions = self.processor.depth_first_search(start_node, best_so_far)
+        if self.optimized:
+            # Pour le DFS optimisé, il est nécessaire de retenir le coût
+            best_so_far = {
+                "dirt_number": self.processor.get_board_dirt_number(),
+                "actions": [],
+                "cost": 15,
+            }
+            self.actions = None
+            self.actions = self.processor.depth_first_search_optimized(
+                start_node, best_so_far
+            )
+        else:
+            best_so_far = {
+                "dirt_number": self.processor.get_board_dirt_number(),
+                "actions": [],
+            }
+            self.actions = None
+            self.actions = self.processor.depth_first_search(start_node, best_so_far)
+
+        # S'il n'y a pas de suite d'action qui nettoie tout le manoir
         if self.actions is None:
+
+            # On récupére le premier meilleur chemin trouvé
             self.actions = best_so_far["actions"]
 
         print("Nouveau parcours : ", self.actions)

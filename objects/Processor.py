@@ -136,3 +136,55 @@ class Processor:
                     return _tmp_actions
 
         return None
+
+    def depth_first_search_optimized(self, start_node, best_so_far, actions=[]):
+        """
+        Cette fois-ci, l'algorithme est optimisé dans le sens ou le chemin retourné à la fin est le plus court possible
+        L'algorithme est globalement le même que pour la fonction depth_first_search
+        La principale différence est que l'on sauvegarde l'ensemble des chemins retournés et on les compares entre eux pour retourner le plus court
+        Le chemin retourné correspond donc au chemin le plus court la position actuelle du robot et la pièce contenant de la poussière ou un bijou la plus proche
+        """
+
+        if start_node.action:
+            actions = actions + [start_node.action]
+
+        max_depth = 15
+
+        # On crée une variable pour sauvegarder le chemin le plus court
+        shortest_path = None
+
+        # Condition de fin pour la fonction récurssive
+        # Si le manoir est propre
+        if start_node.state.dirt_number == 0:
+            return actions
+
+        # Mémorisation du meilleur plan d'action pour l'instant
+        # Au cas où pas de résultat qui vide tout le manoir est trouvé
+        if (
+            start_node.state.dirt_number < best_so_far["dirt_number"]
+            and start_node.depth < best_so_far["cost"]
+        ):
+            best_so_far["dirt_number"] = start_node.state.dirt_number
+            best_so_far["actions"] = actions
+            best_so_far["cost"] = start_node.depth
+
+        # Si on a pas atteint la profondeur maximale (donc le coût maximum )
+        if start_node.depth < max_depth:
+
+            # Pour chaque noeud générés à partir du noeuds courants
+            for node in self.expand(start_node):
+
+                # On appelle de manière récurssive l'algorithme DFS avec la pièce de départ
+                _tmp_actions = self.depth_first_search(node, best_so_far, actions)
+
+                # Si un chemin est retourné par la fonction
+                if _tmp_actions:
+
+                    # On le compare avec le chemin le plus court précédemment sauvegardé
+                    if not shortest_path or len(_tmp_actions) < len(shortest_path):
+
+                        # Si le nouveau chemin est plus court, on le conserve et un supprime l'ancien
+                        shortest_path = _tmp_actions
+
+        # On retourne le chemin le moins coûteux
+        return shortest_path

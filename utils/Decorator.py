@@ -1,6 +1,5 @@
-# TODO Commenter le code
 
-
+# Simple décorateur personnalisé afin de savoir si une ancienne fonction est utilisée ou non
 def deprecated(func):
     def wrapper(*args, **kwargs):
         print(

@@ -4,7 +4,7 @@ from objects.Robot import Robot
 import json
 from objects.Graph import Graph
 
-# TODO Commenter le code
+# Ce fichier permet de simplement tester des fonctionnalités en cours de développement
 
 b = Board()
 b.board = [

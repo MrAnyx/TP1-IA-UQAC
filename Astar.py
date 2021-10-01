@@ -2,7 +2,10 @@ import random
 import math
 
 """
-    La classe triplet permet 
+    La classe triplet permet d'indexer notre graphe :
+     - chaque élément contient sa valeur (f ou heuristique)
+     - l'adresse de son "fils de gauche" (fils à gauche dans le graphe)
+     - l'adresse de son premier "frère de droite" (noeud frère directement à droite dans le graphe)
 """
 class triplet:
     def __init__(self, f, position, indFils, indBro):
@@ -38,6 +41,7 @@ def genTableau():
 
     return tab
 
+#Retourne la case pleine la plus proche
 def closeDirt(tab, pos):
     dist = 6
     goal = [-1, -1]
@@ -51,6 +55,7 @@ def closeDirt(tab, pos):
 
     return goal
 
+#Retourne les indices des voisins d'une case
 def getVoisins(pos):
     indVoisins = []
     if pos[0]>0:
@@ -63,9 +68,11 @@ def getVoisins(pos):
         indVoisins.append([pos[0], pos[1]+1])
     return indVoisins
 
+#Calcule l'heuristique c'est à dire la distance entre le noeud actuel et l'arrivée
 def heuristique(pos, goal):
-    return math.sqrt((pos[0] - goal[0])**2 + sqrt((pos[1] - goal[1])**2))
+    return math.sqrt((pos[0] - goal[0])**2 + math.sqrt((pos[1] - goal[1])**2))
 
+#Vérifie si on est arrivée sur une case pleine
 def fin(pos, goal):
     if (pos[0] == goal[0]) and (pos[1] == goal[1]):
         return False
@@ -75,7 +82,10 @@ def aspire(tab, pos):
     tab[pos[0],pos[1]] = 0
     return tab
 
+#Fonction qui renvoie le chemin optimal
 def cheminOpti(tab):
+
+    """A DELETE"""
     a = random.randint(0, 4)
     b = random.randint(0, 4)
     position = [a,b]

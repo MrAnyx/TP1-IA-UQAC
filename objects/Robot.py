@@ -244,7 +244,7 @@ class Robot:
 
     #  Cette fonction permet de récuperer le chemin vers une pièce non vide et de mettre à jour l'état interne du robot
     def explore(self):
-        print("I'm exploring the board to find the best path")
+        print("I'm exploring the board to find the best path\n")
 
         # On récupère le chemin vers une pièce non vides
         # En fonction de l'état du robot, l'algorithme informé ou non informé sera lancé

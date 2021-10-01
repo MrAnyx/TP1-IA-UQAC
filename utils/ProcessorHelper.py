@@ -1,3 +1,5 @@
+# Auteur : Robin Bidanchon
+
 import math
 
 

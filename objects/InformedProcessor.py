@@ -1,3 +1,6 @@
+# Autheur : Vasco Andréassian--Orengo, Robin Bidanchon
+
+
 import random
 import math
 from utils.ProcessorHelper import ProcessorHelper

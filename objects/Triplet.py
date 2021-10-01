@@ -1,3 +1,6 @@
+# Atueur : Vasco Andréassian--Orengo, Robin Bidanchon
+
+
 class Triplet:
     """
     La classe Triplet permet d'indexer notre graphe :

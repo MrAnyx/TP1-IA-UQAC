@@ -1,3 +1,5 @@
+# Auteur : Robin Bidanchon
+
 from objects.Board import Board
 from objects.Window import Window
 from objects.Robot import Robot

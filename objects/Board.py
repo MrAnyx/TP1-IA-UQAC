@@ -1,3 +1,5 @@
+# Auteur : Robin Bidanchon
+
 import random
 import math
 from utils.Decorator import deprecated

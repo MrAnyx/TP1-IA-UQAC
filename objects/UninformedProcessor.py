@@ -1,3 +1,5 @@
+# Auteur : Robin Bidanchon
+
 from objects.Graph import Graph
 from objects.Board import Board
 from utils.ProcessorHelper import ProcessorHelper

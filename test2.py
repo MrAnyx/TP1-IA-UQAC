@@ -1,3 +1,5 @@
+# Auteur : Vasco Andréassian--Orengo
+
 import random
 import math
 

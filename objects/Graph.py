@@ -1,3 +1,6 @@
+# Auteur : Robin Bidanchon
+
+
 class Graph:
     """
     Cette classe permet de symboliser le graph entre les pièces

@@ -1,3 +1,5 @@
+# Auteur : Robin Bidanchon
+
 from utils.ProcessorHelper import ProcessorHelper
 
 

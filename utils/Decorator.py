@@ -1,3 +1,4 @@
+# Auteur : Robin Bidanchon
 
 # Simple décorateur personnalisé afin de savoir si une ancienne fonction est utilisée ou non
 def deprecated(func):

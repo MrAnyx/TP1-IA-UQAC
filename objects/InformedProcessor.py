@@ -5,11 +5,13 @@ import random
 import math
 from utils.ProcessorHelper import ProcessorHelper
 from objects.Triplet import Triplet
+from objects.Graph import Graph
 
 
 class InformedProcessor:
     def __init__(self, board):
         self.board = board.get_board()
+        self.graph = None
 
     # Retourne la case pleine la plus proche
     def closeDirt(self, board, pos):
@@ -24,19 +26,6 @@ class InformedProcessor:
                         dist = a
         return goal
 
-    # Retourne les indices des voisins d'une case
-    def getVoisins(self, pos):
-        indVoisins = []
-        if pos[0] > 0:
-            indVoisins.append([pos[0] - 1, pos[1]])
-        if pos[0] < 4:
-            indVoisins.append([pos[0] + 1, pos[1]])
-        if pos[1] > 0:
-            indVoisins.append([pos[0], pos[1] - 1])
-        if pos[1] < 4:
-            indVoisins.append([pos[0], pos[1] + 1])
-        return indVoisins
-
     # Calcule l'heuristique c'est à dire la distance entre le noeud actuel et l'arrivée
     def heuristique(self, pos, goal):
         return math.sqrt((pos[0] - goal[0]) ** 2 + (pos[1] - goal[1]) ** 2)
@@ -47,9 +36,24 @@ class InformedProcessor:
             return False
         return True
 
+    # Crée le graph à partir des voisin de chaque pièce
+    def save_graph(self):
+        """
+        Renvoie un dictionnaire de type :
+        {
+            "node_id" : [neighbors_id]
+            ...
+        }
+        """
+        graph = ProcessorHelper.create_graph()
+
+        # On modifie l'état interne du processeur en sauvegardant le graph
+        self.graph = Graph(graph)
+
     # Fonction qui renvoie le chemin optimal
     def cheminOpti(self, board, position):
 
+        graph = ProcessorHelper.create_graph()
         goal = self.closeDirt(board, position)
         path = []
 
@@ -72,7 +76,14 @@ class InformedProcessor:
                     indice += 1
                     openIndex.append(indice)
                     arbre[index].setLChild(indice)
-                    posVois = self.getVoisins(position)
+                    posVois = list(
+                        map(
+                            lambda id: ProcessorHelper.get_room_coords_from_id(id),
+                            self.graph.get_node_neighbors(
+                                ProcessorHelper.get_room_id_from_coords(position)
+                            ),
+                        )
+                    )
                     nbVois = len(posVois)
                     for i in range(0, nbVois - 1):
                         keep = True

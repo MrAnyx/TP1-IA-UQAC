@@ -204,7 +204,6 @@ class Robot:
         """
 
         # On génère le graph correspondant à la disposition des pièces dans le manoir
-        self.uninformed_processor.save_graph()
 
         # On récupère l'indice de la pièce ou se situe le robot en fonction de ses coordonnées actuelles
         current_position_id = ProcessorHelper.get_room_id_from_coords(self.position())
@@ -212,6 +211,7 @@ class Robot:
         # Si le robot n'est pas informé
         if self.search_type == self.NOT_INFORMED:
 
+            self.uninformed_processor.save_graph()
             # Si le robot est optimisé
             if self.optimized:
                 # On récupère le chemin vers la pièce non cide la plus proche
@@ -224,6 +224,7 @@ class Robot:
 
         # Sinon, on effectue une recherche informée
         else:
+            self.informed_processor.save_graph()
             path = self.informed_processor.greedy_search(
                 self.board.get_board(), self.position()
             )

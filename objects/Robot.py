@@ -109,8 +109,8 @@ class Robot:
         self.board.get_board()[goal[0]][goal[1]] = 0
         self.goal = None
 
-        r.is_reaching_room = False
-        r.will_explore = True
+        self.is_reaching_room = False
+        self.will_explore = True
 
     def display_current_state(self):
         print(f"path : {self.path}")

@@ -1,5 +1,7 @@
 # TP1 IA UQAC
 
+> Pour l'exécution du programme, **aucune librairie n'est nécessaire**. En revanche, pour la modification de celui-ci, il est préférable d'installer les librairies de développement dans un environnement virtuel.
+
 ## Prérequis
 
 - Python (3.9 idéalement)
@@ -29,3 +31,5 @@ pip install -r requirements-dev.txt
 ```
 
 Et voila !
+
+Il ne reste plus qu'a lancer le fichier `main_thread.py`
